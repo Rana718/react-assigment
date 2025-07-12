@@ -1,15 +1,62 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity, Pressable } from 'react-native';
+import RectangleImg from '@/assets/images/Rectangle.png';
+import UserImg from '@/assets/images/user.png';
+import RenderImages from '@/components/Imagecard';
+import { moods, posts } from '@/constants/PostData';
 import { Ionicons } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { moods, posts } from '@/constants/PostData';
-import UserImg from '@/assets/images/user.png';
-import RectangleImg from '@/assets/images/Rectangle.png';
-import RenderImages from '@/components/Imagecard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
+import React, { useState } from 'react';
+import { Alert, Image, Modal, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 export default function HomeScreen() {
   const [selectedMood, setSelectedMood] = useState(0);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+
+  const handleSignOut = async () => {
+    Alert.alert(
+      "Sign Out",
+      "Are you sure you want to sign out? This will clear all your data.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Sign Out",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await AsyncStorage.clear();
+              
+              Toast.show({
+                type: 'success',
+                text1: 'Logout Successfully',
+                text2: 'You have been signed out successfully',
+                position: 'top',
+                visibilityTime: 3000,
+              });
+              
+              setTimeout(() => {
+                router.replace('/(auth)/signin');
+              }, 1000);
+            } catch (error) {
+              console.error('Error clearing storage:', error);
+              Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: 'Failed to sign out. Please try again.',
+                position: 'top',
+                visibilityTime: 3000,
+              });
+            }
+          }
+        }
+      ]
+    );
+    setShowProfileDropdown(false);
+  };
 
   return (
     <View className="flex-1 bg-white">
@@ -23,12 +70,19 @@ export default function HomeScreen() {
           </View>
           <View className="flex-row items-center">
             <Ionicons name="notifications-outline" size={24} color="black" className="mr-3" />
-            <Image source={UserImg} className="w-8 h-8 rounded-full" />
+            <Pressable onPress={() => setShowProfileDropdown(true)}>
+              <Image source={UserImg} className="w-8 h-8 rounded-full" />
+            </Pressable>
           </View>
         </View>
       </View>
 
-      <ScrollView className="flex-1">
+      <ScrollView 
+        keyboardShouldPersistTaps="handled" 
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 100 }}
+      >
         <View className="px-4 py-5 mt-[1px] bg-[#3DC4AB]">
           <Text className="text-center text-lg font-semibold mb-4">How I'm Feeling Right Now</Text>
           <View className="flex-row items-center justify-center">
@@ -93,6 +147,28 @@ export default function HomeScreen() {
       >
         <Ionicons name="add" size={24} color="white" />
       </Pressable>
+
+      <Modal
+        visible={showProfileDropdown}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowProfileDropdown(false)}
+      >
+        <Pressable
+          className="flex-1 bg-black/50"
+          onPress={() => setShowProfileDropdown(false)}
+        >
+          <View className="absolute top-16 right-4 bg-white rounded-lg shadow-lg min-w-[150px]">
+            <Pressable
+              className="flex-row items-center px-4 py-3"
+              onPress={handleSignOut}
+            >
+              <Ionicons name="log-out-outline" size={20} color="#ef4444" />
+              <Text className="ml-3 text-red-500 font-medium">Sign Out</Text>
+            </Pressable>
+          </View>
+        </Pressable>
+      </Modal>
 
     </View>
   );

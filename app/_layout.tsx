@@ -5,7 +5,8 @@ import 'react-native-reanimated';
 import '../global.css'
 import { useEffect, useState } from 'react';
 import SplashScreen from '@/components/SplashScreen';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import KeyboardDismissWrapper from '@/components/KeyboardDismissWrapper';
+import Toast from 'react-native-toast-message';
 
 export default function RootLayout() {
   const [isSplashScreenVisible, setIsSplashScreenVisible] = useState(true);
@@ -24,7 +25,7 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <KeyboardDismissWrapper>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
@@ -32,6 +33,7 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
-    </>
+      <Toast />
+    </KeyboardDismissWrapper>
   );
 }
