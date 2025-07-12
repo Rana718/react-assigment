@@ -69,7 +69,6 @@ export default function VerificationScreen() {
 
   const handleResend = () => {
     if (resendEnabled) {
-      // You can trigger actual resend OTP API here
       Toast.show({
         type: 'info',
         text1: 'Code Resent',
@@ -77,7 +76,7 @@ export default function VerificationScreen() {
         position: 'top',
         visibilityTime: 2000,
       });
-      setCountdown(60); // restart countdown
+      setCountdown(60);
     }
   };
 
