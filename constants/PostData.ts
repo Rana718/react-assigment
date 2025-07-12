@@ -1,0 +1,180 @@
+export const moods = [
+  { id: 1, name: 'happy', emoji: '😊', users: '1.2k' },
+  { id: 2, name: 'romantic', emoji: '😍', users: '850' },
+  { id: 3, name: 'sad', emoji: '😢', users: '320' },
+  { id: 4, name: 'neutral', emoji: '😐', users: '2.1k' },
+  { id: 5, name: 'excited', emoji: '🤩', users: '1.8k' },
+];
+
+export const posts = [
+  {
+    id: 1,
+    date: 'July 07, 2025',
+    mood: '😊',
+    location: 'Metro Manila, Philippines',
+    description: 'You spent time outdoors — surrounded by trees, sunlight, and the quiet rhythm of the city.',
+    images: [
+      'https://picsum.photos/200/200?random=1',
+      'https://picsum.photos/200/200?random=2',
+      'https://picsum.photos/200/200?random=3',
+      'https://picsum.photos/200/200?random=4',
+      'https://picsum.photos/400/200?random=5',
+      'https://picsum.photos/200/200?random=6',
+      'https://picsum.photos/200/200?random=7',
+    ],
+    totalMoments: 15
+  },
+  {
+    id: 2,
+    date: 'July 06, 2025',
+    mood: '😍',
+    location: 'Makati City, Philippines',
+    description: 'A beautiful evening with friends, sharing stories and creating memories that will last forever.',
+    images: [
+      'https://picsum.photos/200/200?random=8',
+      'https://picsum.photos/200/200?random=9',
+      'https://picsum.photos/200/200?random=10',
+      'https://picsum.photos/200/200?random=11',
+      'https://picsum.photos/400/200?random=12',
+      'https://picsum.photos/200/200?random=13',
+      'https://picsum.photos/200/200?random=14',
+    ],
+    totalMoments: 12
+  },
+  {
+    id: 3,
+    date: 'July 05, 2025',
+    mood: '🤩',
+    location: 'Quezon City, Philippines',
+    description: 'An exciting day filled with new adventures and unexpected discoveries around the city.',
+    images: [
+      'https://picsum.photos/200/200?random=15',
+      'https://picsum.photos/200/200?random=16',
+      'https://picsum.photos/200/200?random=17',
+      'https://picsum.photos/200/200?random=18',
+      'https://picsum.photos/400/200?random=19',
+      'https://picsum.photos/200/200?random=20',
+      'https://picsum.photos/200/200?random=21',
+    ],
+    totalMoments: 18
+  },
+  {
+    id: 4,
+    date: 'July 04, 2025',
+    mood: '😢',
+    location: 'Pasig City, Philippines',
+    description: 'Sometimes we need quiet moments to reflect and process our emotions.',
+    images: [
+      'https://picsum.photos/200/200?random=22',
+      'https://picsum.photos/200/200?random=23',
+      'https://picsum.photos/200/200?random=24',
+      'https://picsum.photos/200/200?random=25',
+      'https://picsum.photos/400/200?random=26',
+      'https://picsum.photos/200/200?random=27',
+      'https://picsum.photos/200/200?random=28',
+    ],
+    totalMoments: 8
+  },
+  {
+    id: 5,
+    date: 'July 03, 2025',
+    mood: '😐',
+    location: 'Taguig City, Philippines',
+    description: 'A regular day with simple pleasures and ordinary moments that matter.',
+    images: [
+      'https://picsum.photos/200/200?random=29',
+      'https://picsum.photos/200/200?random=30',
+      'https://picsum.photos/200/200?random=31',
+      'https://picsum.photos/200/200?random=32',
+      'https://picsum.photos/400/200?random=33',
+      'https://picsum.photos/200/200?random=34',
+      'https://picsum.photos/200/200?random=35',
+    ],
+    totalMoments: 10
+  },
+  {
+    id: 6,
+    date: 'July 02, 2025',
+    mood: '😊',
+    location: 'Mandaluyong, Philippines',
+    description: 'Coffee dates and meaningful conversations with people who understand you.',
+    images: [
+      'https://picsum.photos/200/200?random=36',
+      'https://picsum.photos/200/200?random=37',
+      'https://picsum.photos/200/200?random=38',
+      'https://picsum.photos/200/200?random=39',
+      'https://picsum.photos/400/200?random=40',
+      'https://picsum.photos/200/200?random=41',
+      'https://picsum.photos/200/200?random=42',
+    ],
+    totalMoments: 14
+  },
+  {
+    id: 7,
+    date: 'July 01, 2025',
+    mood: '🤩',
+    location: 'San Juan, Philippines',
+    description: 'New month, new energy, and endless possibilities ahead.',
+    images: [
+      'https://picsum.photos/200/200?random=43',
+      'https://picsum.photos/200/200?random=44',
+      'https://picsum.photos/200/200?random=45',
+      'https://picsum.photos/200/200?random=46',
+      'https://picsum.photos/400/200?random=47',
+      'https://picsum.photos/200/200?random=48',
+      'https://picsum.photos/200/200?random=49',
+    ],
+    totalMoments: 20
+  },
+  {
+    id: 8,
+    date: 'June 30, 2025',
+    mood: '😍',
+    location: 'Marikina City, Philippines',
+    description: 'Love is in the air and everything feels magical today.',
+    images: [
+      'https://picsum.photos/200/200?random=50',
+      'https://picsum.photos/200/200?random=51',
+      'https://picsum.photos/200/200?random=52',
+      'https://picsum.photos/200/200?random=53',
+      'https://picsum.photos/400/200?random=54',
+      'https://picsum.photos/200/200?random=55',
+      'https://picsum.photos/200/200?random=56',
+    ],
+    totalMoments: 16
+  },
+  {
+    id: 9,
+    date: 'June 29, 2025',
+    mood: '😊',
+    location: 'Paranaque City, Philippines',
+    description: 'Simple joys and grateful moments that make life beautiful.',
+    images: [
+      'https://picsum.photos/200/200?random=57',
+      'https://picsum.photos/200/200?random=58',
+      'https://picsum.photos/200/200?random=59',
+      'https://picsum.photos/200/200?random=60',
+      'https://picsum.photos/400/200?random=61',
+      'https://picsum.photos/200/200?random=62',
+      'https://picsum.photos/200/200?random=63',
+    ],
+    totalMoments: 11
+  },
+  {
+    id: 10,
+    date: 'June 28, 2025',
+    mood: '🤩',
+    location: 'Las Pinas City, Philippines',
+    description: 'Adventure calls and we must go! Exploring new places and making memories.',
+    images: [
+      'https://picsum.photos/200/200?random=64',
+      'https://picsum.photos/200/200?random=65',
+      'https://picsum.photos/200/200?random=66',
+      'https://picsum.photos/200/200?random=67',
+      'https://picsum.photos/400/200?random=68',
+      'https://picsum.photos/200/200?random=69',
+      'https://picsum.photos/200/200?random=70',
+    ],
+    totalMoments: 22
+  }
+];

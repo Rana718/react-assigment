@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, Image } from 'react-native';
+import { View, Text, TextInput, Pressable, Image, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserImg from '@/assets/images/user.png';
@@ -15,7 +15,7 @@ export default function ProfileScreen() {
   };
 
   return (
-    <View className="flex-1 bg-[#3DC4AB] px-6 pt-16">
+    <ScrollView className="flex-1 bg-[#3DC4AB]" contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 64 }}>
       <View className="items-center mb-8">
         <Image source={UserImg} className="w-32 h-32 rounded-full mb-6" />
         
@@ -41,6 +41,6 @@ export default function ProfileScreen() {
       <Text className="text-black text-center text-sm">
         Your safety is our priority
       </Text>
-    </View>
+    </ScrollView>
   );
 }

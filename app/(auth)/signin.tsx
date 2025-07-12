@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, Image } from 'react-native';
+import { View, Text, TextInput, Pressable, Image, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RectangleImg from '@/assets/images/Rectangle.png';
@@ -15,7 +15,7 @@ export default function SignInScreen() {
   };
 
   return (
-    <View className="flex-1 bg-[#3DC4AB] px-6 pt-16">
+    <ScrollView className="flex-1 bg-[#3DC4AB]" contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 64 }}>
       <Text className="text-black text-2xl font-bold text-center mb-2">
         Welcome to OkaBoka
       </Text>
@@ -58,6 +58,6 @@ export default function SignInScreen() {
       <Text className="text-black text-center text-sm">
         We'll never share your number
       </Text>
-    </View>
+    </ScrollView>
   );
 }
