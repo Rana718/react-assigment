@@ -21,8 +21,13 @@ export const posts = [
       'https://picsum.photos/400/200?random=5',
       'https://picsum.photos/200/200?random=6',
       'https://picsum.photos/200/200?random=7',
+      'https://picsum.photos/200/200?random=71',
+      'https://picsum.photos/200/200?random=72',
+      'https://picsum.photos/200/200?random=73',
+      'https://picsum.photos/400/200?random=74',
+      'https://picsum.photos/200/200?random=75',
     ],
-    totalMoments: 15
+    totalMoments: 15,
   },
   {
     id: 2,
@@ -38,8 +43,11 @@ export const posts = [
       'https://picsum.photos/400/200?random=12',
       'https://picsum.photos/200/200?random=13',
       'https://picsum.photos/200/200?random=14',
+      'https://picsum.photos/200/200?random=76',
+      'https://picsum.photos/200/200?random=77',
+      'https://picsum.photos/400/200?random=78',
     ],
-    totalMoments: 12
+    totalMoments: 18,
   },
   {
     id: 3,
@@ -55,8 +63,11 @@ export const posts = [
       'https://picsum.photos/400/200?random=19',
       'https://picsum.photos/200/200?random=20',
       'https://picsum.photos/200/200?random=21',
+      'https://picsum.photos/200/200?random=79',
+      'https://picsum.photos/200/200?random=80',
+      'https://picsum.photos/200/200?random=81',
     ],
-    totalMoments: 18
+    totalMoments: 20,
   },
   {
     id: 4,
@@ -72,8 +83,10 @@ export const posts = [
       'https://picsum.photos/400/200?random=26',
       'https://picsum.photos/200/200?random=27',
       'https://picsum.photos/200/200?random=28',
+      'https://picsum.photos/200/200?random=82',
+      'https://picsum.photos/200/200?random=83',
     ],
-    totalMoments: 8
+    totalMoments: 12,
   },
   {
     id: 5,
@@ -89,8 +102,10 @@ export const posts = [
       'https://picsum.photos/400/200?random=33',
       'https://picsum.photos/200/200?random=34',
       'https://picsum.photos/200/200?random=35',
+      'https://picsum.photos/200/200?random=84',
+      'https://picsum.photos/200/200?random=85',
     ],
-    totalMoments: 10
+    totalMoments: 15,
   },
   {
     id: 6,
@@ -106,8 +121,11 @@ export const posts = [
       'https://picsum.photos/400/200?random=40',
       'https://picsum.photos/200/200?random=41',
       'https://picsum.photos/200/200?random=42',
+      'https://picsum.photos/200/200?random=86',
+      'https://picsum.photos/200/200?random=87',
+      'https://picsum.photos/200/200?random=88',
     ],
-    totalMoments: 14
+    totalMoments: 18,
   },
   {
     id: 7,
@@ -123,8 +141,10 @@ export const posts = [
       'https://picsum.photos/400/200?random=47',
       'https://picsum.photos/200/200?random=48',
       'https://picsum.photos/200/200?random=49',
+      'https://picsum.photos/200/200?random=89',
+      'https://picsum.photos/200/200?random=90',
     ],
-    totalMoments: 20
+    totalMoments: 22,
   },
   {
     id: 8,
@@ -140,8 +160,10 @@ export const posts = [
       'https://picsum.photos/400/200?random=54',
       'https://picsum.photos/200/200?random=55',
       'https://picsum.photos/200/200?random=56',
+      'https://picsum.photos/200/200?random=91',
+      'https://picsum.photos/200/200?random=92',
     ],
-    totalMoments: 16
+    totalMoments: 19,
   },
   {
     id: 9,
@@ -157,8 +179,10 @@ export const posts = [
       'https://picsum.photos/400/200?random=61',
       'https://picsum.photos/200/200?random=62',
       'https://picsum.photos/200/200?random=63',
+      'https://picsum.photos/200/200?random=93',
+      'https://picsum.photos/200/200?random=94',
     ],
-    totalMoments: 11
+    totalMoments: 17,
   },
   {
     id: 10,
@@ -174,7 +198,9 @@ export const posts = [
       'https://picsum.photos/400/200?random=68',
       'https://picsum.photos/200/200?random=69',
       'https://picsum.photos/200/200?random=70',
+      'https://picsum.photos/200/200?random=95',
+      'https://picsum.photos/200/200?random=96',
     ],
-    totalMoments: 22
-  }
+    totalMoments: 22,
+  },
 ];

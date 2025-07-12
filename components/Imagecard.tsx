@@ -1,93 +1,112 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { View, Text, Pressable, Image } from 'react-native';
+import { Image, Pressable, Text, View } from 'react-native';
 
 const RenderImages = (images: string[], postId: number) => {
     const [expandedPosts, setExpandedPosts] = useState<number[]>([]);
     const isExpanded = expandedPosts.includes(postId);
+    const displayImages = isExpanded ? images : images.slice(0, 7);
 
     const toggleExpanded = (postId: number) => {
-        setExpandedPosts((prev) =>
-            prev.includes(postId) ? prev.filter((id) => id !== postId) : [...prev, postId]
+        setExpandedPosts(prev =>
+            prev.includes(postId)
+                ? prev.filter(id => id !== postId)
+                : [...prev, postId]
         );
     };
 
-    const initialImages = images.slice(0, 7);
-    const extraImages = isExpanded ? images.slice(7, 15) : [];
+    const renderImage = (uri: string, className: string, key: number) => (
+        <Image
+            key={key}
+            source={{ uri }}
+            className={className}
+            resizeMode="cover"
+        />
+    );
 
-    return (
-        <View className="mt-3">
-            
-            <View className="flex-row h-40 space-x-1">
-               
-                <View className="flex-2 space-y-1">
-                    <View className="flex-row space-x-1">
-                        {initialImages[0] && (
-                            <Image source={{ uri: initialImages[0] }} className="flex-1 h-20 rounded-lg" />
-                        )}
-                        {initialImages[1] && (
-                            <Image source={{ uri: initialImages[1] }} className="flex-1 h-20 rounded-lg" />
-                        )}
+    const renderRowImages = (start: number, end: number, rowClass: string) => (
+        <View className={rowClass}>
+            {images.slice(start, end).map((img, i) =>
+                renderImage(img, 'flex-1 mx-1 rounded-lg h-full', start + i)
+            )}
+        </View>
+    );
+
+    const renderGrid = () => (
+        <View className="flex-row h-[160px] mb-2">
+            <View className="flex-[2] mr-1">
+                {[0, 2].map((start, rowIndex) => (
+                    <View key={rowIndex} className="flex-row flex-1 mb-1">
+                        {[0, 1].map(col => {
+                            const index = start + col;
+                            return (
+                                displayImages[index] &&
+                                renderImage(
+                                    displayImages[index],
+                                    `flex-1 ${col === 0 ? 'mr-1' : 'ml-1'} rounded-lg`,
+                                    index
+                                )
+                            );
+                        })}
                     </View>
-                    <View className="flex-row space-x-1">
-                        {initialImages[2] && (
-                            <Image source={{ uri: initialImages[2] }} className="flex-1 h-20 rounded-lg" />
-                        )}
-                        {initialImages[3] && (
-                            <Image source={{ uri: initialImages[3] }} className="flex-1 h-20 rounded-lg" />
-                        )}
-                    </View>
-                </View>
-
-                
-                {initialImages[4] && (
-                    <Image source={{ uri: initialImages[4] }} className="w-[23%] h-full rounded-lg" />
-                )}
-
-                
-                <View className="flex-1 justify-between space-y-1">
-                    {initialImages[5] && (
-                        <Image source={{ uri: initialImages[5] }} className="w-full h-[77px] rounded-lg" />
-                    )}
-                    {initialImages[6] && (
-                        <Image source={{ uri: initialImages[6] }} className="w-full h-[77px] rounded-lg" />
-                    )}
-                </View>
+                ))}
             </View>
 
-            
-            {isExpanded && (
-                <View className="mt-3 space-y-1">
-                    <View className="flex-row justify-between">
-                        {extraImages.slice(0, 4).map((img, idx) => (
-                            <Image
-                                key={`row1-${idx}`}
-                                source={{ uri: img }}
-                                className="w-[23.5%] aspect-square rounded-lg"
-                            />
-                        ))}
-                    </View>
-                    <View className="flex-row justify-between">
-                        {extraImages.slice(4, 8).map((img, idx) => (
-                            <Image
-                                key={`row2-${idx}`}
-                                source={{ uri: img }}
-                                className="w-[23.5%] aspect-square rounded-lg"
-                            />
-                        ))}
+            {displayImages[4] && (
+                <View className="flex-1 mx-1 relative">
+                    {renderImage(displayImages[4], 'flex-1 rounded-lg h-full', 4)}
+                    <View className="absolute bottom-0 bg-white/40 ">
+                        <Text className="font-bold text-center">
+                            Best Moment Of The Day
+                        </Text>
                     </View>
                 </View>
             )}
 
-            
+            <View className="flex-1 ml-1">
+                {[5, 6].map(index =>
+                    displayImages[index] &&
+                    renderImage(
+                        displayImages[index],
+                        `flex-1 ${index === 5 ? 'mb-1' : ''} rounded-lg w-full`,
+                        index
+                    )
+                )}
+            </View>
+        </View>
+    );
+
+    return (
+        <View className="mt-3">
+            {isExpanded && (
+                <Pressable
+                    className="flex-row items-center justify-center mb-3"
+                    onPress={() => toggleExpanded(postId)}
+                >
+                    <Text className="text-gray-600 mr-2">Close</Text>
+                    <Ionicons name="close" size={16} color="#666" />
+                </Pressable>
+            )}
+
+            {renderGrid()}
+
             {!isExpanded && images.length > 7 && (
                 <Pressable
                     className="flex-row items-center justify-center mt-2"
                     onPress={() => toggleExpanded(postId)}
                 >
-                    <Text className="text-gray-600 mr-2">{images.length - 7} More Moments</Text>
+                    <Text className="text-gray-600 mr-2">
+                        {images.length - 7} More Moments
+                    </Text>
                     <Ionicons name="chevron-down" size={16} color="#666" />
                 </Pressable>
+            )}
+
+            {isExpanded && images.length > 7 && (
+                <>
+                    {renderRowImages(7, 11, 'flex-row h-[80px] mb-1')}
+                    {images.length > 11 && renderRowImages(11, 15, 'flex-row h-[80px]')}
+                </>
             )}
         </View>
     );

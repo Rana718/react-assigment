@@ -24,12 +24,12 @@ export default function AboutStep1Screen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-[#3DC4AB]" contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 64 }}>
+    <ScrollView className="flex-1 bg-[#3DC4AB] pt-10 px-4" >
       <Pressable className="mb-6" onPress={() => router.back()}>
         <Ionicons name="arrow-back" size={24} color="black" />
       </Pressable>
 
-      <Text className="text-black text-lg font-bold mb-6 text-center">
+      <Text className="text-black text-2xl font-bold mb-10 text-center">
         A little about you so we match better
       </Text>
 

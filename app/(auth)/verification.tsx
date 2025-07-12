@@ -51,14 +51,14 @@ export default function VerificationScreen() {
         </Text>
       </View>
 
-      <View className="flex-row justify-center space-x-3 mb-6">
+      <View className="flex-row justify-center mb-6">
         {otp.map((digit, index) => (
           <TextInput
             key={index}
             ref={(ref) => {
               inputRefs.current[index] = ref;
             }}
-            className="w-12 h-12 bg-white rounded-lg text-center text-lg font-bold border border-gray-300"
+            className="px-5 bg-white rounded-lg text-center text-xl font-bold border border-gray-300 mx-2"
             value={digit}
             onChangeText={(value) => handleOtpChange(value, index)}
             onKeyPress={(e) => handleKeyPress(e, index)}
@@ -67,7 +67,6 @@ export default function VerificationScreen() {
             returnKeyType="next"
             autoFocus={index === 0}
           />
-
         ))}
       </View>
 

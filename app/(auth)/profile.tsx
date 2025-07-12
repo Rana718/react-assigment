@@ -23,6 +23,7 @@ export default function ProfileScreen() {
           What should we call you?
         </Text>
       </View>
+      
 
       <TextInput
         className="bg-white rounded-lg px-4 py-3 mb-6 text-black"

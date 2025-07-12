@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Pressable, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import { moods, posts } from '@/constants/PostData';
 import UserImg from '@/assets/images/user.png';
 import RectangleImg from '@/assets/images/Rectangle.png';
 import RenderImages from '@/components/Imagecard';
+import { router } from 'expo-router';
 
 export default function HomeScreen() {
   const [selectedMood, setSelectedMood] = useState(0);
 
   return (
     <View className="flex-1 bg-white">
-      {/* Header */}
       <View className="bg-[#3DC4AB] px-4 pt-12 pb-4">
         <View className="flex-row items-center justify-between">
           <View className="flex-row items-center">
@@ -29,25 +29,28 @@ export default function HomeScreen() {
       </View>
 
       <ScrollView className="flex-1">
-        {/* Mood Section */}
-        <View className="px-4 py-6">
+        <View className="px-4 py-5 mt-[1px] bg-[#3DC4AB]">
           <Text className="text-center text-lg font-semibold mb-4">How I'm Feeling Right Now</Text>
           <View className="flex-row items-center justify-center">
             <Ionicons name="chevron-back" size={20} color="#666" />
-            <View className="mx-4 flex-row">
+            <View className="mx-4 flex-row items-end" style={{ height: 70 }}>
               {moods.map((mood, index) => (
                 <TouchableOpacity
                   key={mood.id}
-                  style={{ marginHorizontal: 12, alignItems: 'center' }}
+                  style={{
+                    marginHorizontal: 12,
+                    alignItems: 'center',
+                    transform: selectedMood === index ? [{ translateY: -10 }] : [{ translateY: 0 }]
+                  }}
                   onPress={() => setSelectedMood(index)}
                 >
-                  <Text style={{ fontSize: selectedMood === index ? 48 : 36, marginBottom: 8 }}>
+                  <Text style={{ fontSize: selectedMood === index ? 48 : 36, marginBottom: 2 }}>
                     {mood.emoji}
                   </Text>
                   {selectedMood === index && (
-                    <View style={{ alignItems: 'center' }}>
-                      <Image source={UserImg} style={{ width: 24, height: 24, borderRadius: 12, marginBottom: 4 }} />
-                      <Text style={{ fontSize: 12, color: '#666' }}>{mood.users}</Text>
+                    <View className="flex-row items-center justify-center">
+                      <AntDesign name="user" size={14} color="black" />
+                      <Text className='text-[11px] text-[#666] ml-0.5'>{mood.users}</Text>
                     </View>
                   )}
                 </TouchableOpacity>
@@ -57,8 +60,7 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* Posts Section */}
-        <View className="px-4">
+        <View className="px-4 pt-3">
           {posts.map((post) => (
             <View key={post.id} className="bg-white rounded-lg shadow-sm border border-gray-100 mb-4 p-4">
               <View className="flex-row items-center justify-between mb-2">
@@ -85,6 +87,12 @@ export default function HomeScreen() {
         </View>
       </ScrollView>
 
+      <Pressable
+        className="absolute bottom-8 right-6 w-14 h-14 bg-[#3DC4AB] rounded-full items-center justify-center shadow-lg"
+        onPress={() => router.push('/(tabs)/camera')}
+      >
+        <Ionicons name="add" size={24} color="white" />
+      </Pressable>
 
     </View>
   );
