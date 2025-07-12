@@ -1,18 +1,19 @@
-import { Stack, Slot, useRouter } from 'expo-router';
+import { Tabs, router } from 'expo-router';
 import { View, Text, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function TabLayout() {
-  const router = useRouter();
-
   return (
     <View className="flex-1">
-      {/* Stack Navigator */}
-      <Stack screenOptions={{ headerShown: false }} />
-
-      {/* Screen Content */}
-      <Slot />
-
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: { display: 'none' }
+        }}
+      >
+        <Tabs.Screen name="index" />
+      </Tabs>
+      
       {/* Bottom Navigation */}
       <View className="bg-[#3DC4AB] px-4 py-3">
         <View className="flex-row justify-around">

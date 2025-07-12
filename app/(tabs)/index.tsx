@@ -85,12 +85,7 @@ export default function HomeScreen() {
         </View>
       </ScrollView>
 
-      <Pressable
-        className="absolute bottom-20 right-6 w-14 h-14 bg-[#3DC4AB] rounded-full items-center justify-center shadow-lg"
-        onPress={() => router.push('/camera')}
-      >
-        <Ionicons name="add" size={24} color="white" />
-      </Pressable>
+
     </View>
   );
 }
