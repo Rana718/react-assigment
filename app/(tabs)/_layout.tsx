@@ -1,11 +1,18 @@
-import { Tabs, usePathname } from 'expo-router';
-import { View, Text, Pressable } from 'react-native';
+import { Link, Tabs, usePathname } from 'expo-router';
+import { Pressable, Text, View } from 'react-native';
+import Animated, { FadeInUp } from 'react-native-reanimated';
+
+const footerTabs = [
+  { label: "Oka(you)", route: "/(tabs)/" },
+  { label: "Bond", route: "/(tabs)/bond" },
+  { label: "Oka's", route: "/(tabs)/okas" },
+  { label: "Chats", route: "/(tabs)/chats" }
+];
 
 export default function TabLayout() {
   const pathname = usePathname();
 
-  const hideFooterRoutes = ['/camera'];
-
+  const hideFooterRoutes = ['/camera', '/chats/[chatid]', '/chats/call/[callid]'];
   const shouldHideFooter = hideFooterRoutes.includes(pathname);
 
   return (
@@ -17,23 +24,35 @@ export default function TabLayout() {
         }}
       >
         <Tabs.Screen name="index" />
-        <Tabs.Screen name="camera" options={{ headerShown: false }} />
+        <Tabs.Screen name="camera" />
+        <Tabs.Screen name="chats" />
       </Tabs>
 
       {!shouldHideFooter && (
-        <View className="bg-[#3DC4AB] px-4 py-3 pb-8 border-t border-gray-200">
+        <Animated.View
+          entering={FadeInUp}
+          className="bg-[#3DC4AB] px-4 py-3 pb-12 border-t border-gray-200"
+        >
           <View className="flex-row justify-around">
-            <Pressable className="items-center">
-              <Text className="text-black font-semibold">Oka(you)</Text>
-            </Pressable>
-            <Pressable className="items-center">
-              <Text className="text-black opacity-60">Bond</Text>
-            </Pressable>
-            <Pressable className="items-center">
-              <Text className="text-black opacity-60">Oka's</Text>
-            </Pressable>
+            {footerTabs.map(({ label, route }) => {
+              const isActive = pathname === route;
+
+              return (
+                <Link
+                  key={route}
+                  href={route as any}
+                  asChild
+                >
+                  <Pressable className="items-center">
+                    <Text className={`text-black font-semibold ${isActive ? 'opacity-100 underline' : 'opacity-60'}`}>
+                      {label}
+                    </Text>
+                  </Pressable>
+                </Link>
+              );
+            })}
           </View>
-        </View>
+        </Animated.View>
       )}
     </View>
   );

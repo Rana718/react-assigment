@@ -11,7 +11,7 @@ export default function VerificationScreen() {
   const inputRefs = useRef<(TextInput | null)[]>([]);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: number;
     if (countdown > 0) {
       setResendEnabled(false);
       timer = setTimeout(() => setCountdown((prev) => prev - 1), 1000);
