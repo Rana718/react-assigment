@@ -8,11 +8,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Image, Modal, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
 export default function HomeScreen() {
   const [selectedMood, setSelectedMood] = useState(0);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const insets = useSafeAreaInsets();
 
   const handleSignOut = async () => {
     Alert.alert(
@@ -29,7 +31,7 @@ export default function HomeScreen() {
           onPress: async () => {
             try {
               await AsyncStorage.clear();
-              
+
               Toast.show({
                 type: 'success',
                 text1: 'Logout Successfully',
@@ -37,7 +39,7 @@ export default function HomeScreen() {
                 position: 'top',
                 visibilityTime: 3000,
               });
-              
+
               setTimeout(() => {
                 router.replace('/(auth)/signin');
               }, 1000);
@@ -60,7 +62,7 @@ export default function HomeScreen() {
 
   return (
     <View className="flex-1 bg-white">
-      <View className="bg-[#3DC4AB] px-4 pt-12 pb-4">
+      <View className="bg-[#3DC4AB] px-4 pt-3 pb-4">
         <View className="flex-row items-center justify-between">
           <View className="flex-row items-center">
             <View className="w-12 h-12 rounded-full bg-white items-center justify-center mr-3">
@@ -77,8 +79,8 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <ScrollView 
-        keyboardShouldPersistTaps="handled" 
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
         className="flex-1"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 100 }}
@@ -158,7 +160,7 @@ export default function HomeScreen() {
           className="flex-1 bg-black/50"
           onPress={() => setShowProfileDropdown(false)}
         >
-          <View className="absolute top-16 right-4 bg-white rounded-lg shadow-lg min-w-[150px]">
+          <View className="absolute bg-white rounded-lg shadow-lg min-w-[150px]" style={{ top: insets.top + 64, right: 16 }}>
             <Pressable
               className="flex-row items-center px-4 py-3"
               onPress={handleSignOut}

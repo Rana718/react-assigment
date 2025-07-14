@@ -1,12 +1,13 @@
+import KeyboardDismissWrapper from '@/components/KeyboardDismissWrapper';
+import SplashScreen from '@/components/SplashScreen';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-import '../global.css'
 import { useEffect, useState } from 'react';
-import SplashScreen from '@/components/SplashScreen';
-import KeyboardDismissWrapper from '@/components/KeyboardDismissWrapper';
+import 'react-native-reanimated';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import '../global.css';
 
 export default function RootLayout() {
   const [isSplashScreenVisible, setIsSplashScreenVisible] = useState(true);
@@ -25,15 +26,17 @@ export default function RootLayout() {
   }
 
   return (
-    <KeyboardDismissWrapper>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-      <Toast />
-    </KeyboardDismissWrapper>
+    <SafeAreaProvider>
+      <KeyboardDismissWrapper>
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="auto" />
+        <Toast />
+      </KeyboardDismissWrapper>
+    </SafeAreaProvider>
   );
 }

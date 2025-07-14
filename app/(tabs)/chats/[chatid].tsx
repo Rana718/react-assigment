@@ -5,15 +5,15 @@ import {
     FlatList,
     Image,
     Keyboard,
+    KeyboardAvoidingView,
     Platform,
-    SafeAreaView,
     StatusBar,
     Text,
     TextInput,
     TouchableOpacity,
     View
 } from 'react-native';
-import KeyboardDismissWrapper from '../../../components/KeyboardDismissWrapper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MessageBubble from '../../../components/MessageBubble';
 import { chats, currentUser, Message } from '../../../constants/tempData';
 
@@ -25,6 +25,7 @@ export default function ChatConversation() {
     const [isTyping, setIsTyping] = useState(false);
     const [keyboardHeight, setKeyboardHeight] = useState(0);
     const flatListRef = useRef<FlatList>(null);
+    const insets = useSafeAreaInsets();
 
     useEffect(() => {
         const chat = chats.find(c => c.id === chatid);
@@ -35,12 +36,24 @@ export default function ChatConversation() {
     }, [chatid]);
 
     useEffect(() => {
-        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
-            setKeyboardHeight(e.endCoordinates.height);
-        });
-        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-            setKeyboardHeight(0);
-        });
+        let keyboardDidShowListener: any;
+        let keyboardDidHideListener: any;
+
+        if (Platform.OS === 'ios') {
+            keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', (e) => {
+                setKeyboardHeight(e.endCoordinates.height);
+            });
+            keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', () => {
+                setKeyboardHeight(0);
+            });
+        } else {
+            keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
+                setKeyboardHeight(e.endCoordinates.height);
+            });
+            keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+                setKeyboardHeight(0);
+            });
+        }
 
         return () => {
             keyboardDidShowListener?.remove();
@@ -94,14 +107,12 @@ export default function ChatConversation() {
 
     const handleDeleteMessage = (messageId: string, deleteType: 'me' | 'everyone') => {
         if (deleteType === 'everyone') {
-            // Replace the message text with "This message was deleted"
             setMessages(prev => prev.map(msg =>
                 msg.id === messageId
                     ? { ...msg, text: '🚫 This message was deleted', isDeleted: true }
                     : msg
             ));
         } else {
-            // Remove the message only for current user
             setMessages(prev => prev.filter(msg => msg.id !== messageId));
         }
     };
@@ -115,7 +126,7 @@ export default function ChatConversation() {
     const renderMessage = ({ item, index }: { item: Message; index: number }) => {
         const isCurrentUser = item.senderId === currentUser.id;
         const showTime = index === 0 ||
-            new Date(item.timestamp).getTime() - new Date(messages[index - 1].timestamp).getTime() > 3600000; // Show date every hour
+            new Date(item.timestamp).getTime() - new Date(messages[index - 1].timestamp).getTime() > 3600000;
 
         return (
             <MessageBubble
@@ -145,100 +156,113 @@ export default function ChatConversation() {
 
     if (!currentChat) {
         return (
-            <SafeAreaView className="flex-1 bg-white justify-center items-center">
+            <View className="flex-1 bg-white justify-center items-center" style={{ paddingTop: insets.top }}>
+                <StatusBar barStyle="light-content" backgroundColor="#3DC4AB" />
                 <Text className="text-gray-500">Chat not found</Text>
-            </SafeAreaView>
+            </View>
         );
     }
 
     return (
-        <KeyboardDismissWrapper>
-            <SafeAreaView className="flex-1 bg-white">
-                <StatusBar barStyle="light-content" backgroundColor="#3DC4AB" />
+        <View className="flex-1 bg-white" style={{ paddingTop: insets.top }}>
+            <StatusBar barStyle="light-content" backgroundColor="#3DC4AB" />
 
-                <View className="bg-[#3DC4AB] px-4 py-3 flex-row items-center">
-                    <TouchableOpacity onPress={() => router.back()} className="mr-3">
-                        <Ionicons name="arrow-back" size={24} color="white" />
-                    </TouchableOpacity>
+            <View className="bg-[#3DC4AB] px-4 py-3 flex-row items-center">
+                <TouchableOpacity onPress={() => router.back()} className="mr-3">
+                    <Ionicons name="arrow-back" size={24} color="white" />
+                </TouchableOpacity>
 
-                    <TouchableOpacity className="flex-row items-center flex-1" activeOpacity={0.7}>
-                        <View className="relative">
-                            <Image
-                                source={{ uri: currentChat.user.profileImage }}
-                                className="w-10 h-10 rounded-full mr-3"
-                            />
-                            {currentChat.user.isOnline && (
-                                <View className="absolute bottom-0 right-2 w-3 h-3 bg-white rounded-full border border-[#3DC4AB]" />
-                            )}
-                        </View>
-                        <View className="flex-1">
-                            <Text className="text-white font-semibold text-lg truncate">
-                                {currentChat.user.name}
-                            </Text>
-                            <Text className="text-white opacity-80 text-sm">
-                                {isTyping ? 'typing...' : (currentChat.user.isOnline ? 'Online' : `Last seen ${currentChat.user.lastSeen || 'recently'}`)}
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <View className="flex-row gap-5">
-                        <TouchableOpacity onPress={() => handleCall(false)}>
-                            <Ionicons name="call" size={24} color="white" />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => handleCall(true)}>
-                            <Ionicons name="videocam" size={24} color="white" />
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Ionicons name="ellipsis-vertical" size={24} color="white" />
-                        </TouchableOpacity>
+                <TouchableOpacity className="flex-row items-center flex-1" activeOpacity={0.7}>
+                    <View className="relative">
+                        <Image
+                            source={{ uri: currentChat.user.profileImage }}
+                            className="w-10 h-10 rounded-full mr-3"
+                        />
+                        {currentChat.user.isOnline && (
+                            <View className="absolute bottom-0 right-2 w-3 h-3 bg-white rounded-full border border-[#3DC4AB]" />
+                        )}
                     </View>
-                </View>
+                    <View className="flex-1">
+                        <Text className="text-white font-semibold text-lg truncate">
+                            {currentChat.user.name}
+                        </Text>
+                        <Text className="text-white opacity-80 text-sm">
+                            {isTyping ? 'typing...' : (currentChat.user.isOnline ? 'Online' : `Last seen ${currentChat.user.lastSeen || 'recently'}`)}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
 
+                <View className="flex-row gap-5">
+                    <TouchableOpacity onPress={() => handleCall(false)}>
+                        <Ionicons name="call" size={24} color="white" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleCall(true)}>
+                        <Ionicons name="videocam" size={24} color="white" />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Ionicons name="ellipsis-vertical" size={24} color="white" />
+                    </TouchableOpacity>
+                </View>
+            </View>
+
+            <KeyboardAvoidingView 
+                className="flex-1"
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                keyboardVerticalOffset={0}
+            >
                 <View className="flex-1 bg-[#E5DDD5]">
                     <FlatList
                         ref={flatListRef}
                         data={messages}
                         renderItem={renderMessage}
                         keyExtractor={(item) => item.id}
-                        className="flex-1 px-4 py-2"
+                        className="flex-1 px-4"
                         showsVerticalScrollIndicator={false}
                         onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: false })}
                         ListFooterComponent={renderTypingIndicator}
-                        style={{ paddingBottom: keyboardHeight > 0 ? 20 : 0 }}
+                        contentContainerStyle={{ 
+                            paddingTop: 10,
+                            paddingBottom: 10,
+                            flexGrow: 1
+                        }}
+                        keyboardShouldPersistTaps="handled"
                     />
                 </View>
 
                 <View
-                    className="bg-[#F0F0F0] border-t border-gray-300"
+                    className="bg-white border-t border-gray-200"
                     style={{
-                        paddingBottom: Platform.OS === 'ios' ? (keyboardHeight > 0 ? 0 : 20) : 10,
-                        marginBottom: Platform.OS === 'android' && keyboardHeight > 0 ? keyboardHeight : 0
+                        paddingBottom: Math.max(insets.bottom, 8)
                     }}
                 >
-                    <View className="flex-row items-end px-3 py-2">
-                        <View className="flex-1 flex-row items-end bg-white rounded-full border border-gray-300 px-3 py-1 mx-2">
-                            <TouchableOpacity className="p-1 mr-2">
-                                <Ionicons name="happy-outline" size={22} color="#666" />
+                    <View className="flex-row items-end px-2 py-2">
+                        <View className="flex-1 flex-row items-end bg-white rounded-3xl border border-gray-300 px-2 py-1 mx-1 shadow-sm">
+                            <TouchableOpacity className="p-2">
+                                <Ionicons name="happy-outline" size={24} color="#8E8E93" />
                             </TouchableOpacity>
 
                             <TextInput
-                                className="flex-1 text-base py-2 max-h-24"
-                                placeholder="Message"
+                                className="flex-1 text-base py-2 px-2 max-h-32"
+                                placeholder="Type a message"
                                 value={messageText}
                                 onChangeText={setMessageText}
                                 multiline
-                                placeholderTextColor="#999"
+                                placeholderTextColor="#8E8E93"
                                 onSubmitEditing={sendMessage}
-                                style={{ minHeight: 36 }}
+                                style={{ 
+                                    minHeight: 40,
+                                    lineHeight: 20,
+                                    textAlignVertical: 'top'
+                                }}
                             />
 
-                            <TouchableOpacity className="p-1 ml-2">
-                                <Ionicons name="attach" size={22} color="#666" />
+                            <TouchableOpacity className="p-2">
+                                <Ionicons name="attach" size={24} color="#8E8E93" />
                             </TouchableOpacity>
 
                             {messageText.trim().length === 0 && (
-                                <TouchableOpacity className="p-1 ml-1">
-                                    <Ionicons name="camera" size={22} color="#666" />
+                                <TouchableOpacity className="p-2">
+                                    <Ionicons name="camera" size={24} color="#8E8E93" />
                                 </TouchableOpacity>
                             )}
                         </View>
@@ -246,18 +270,18 @@ export default function ChatConversation() {
                         {messageText.trim().length > 0 ? (
                             <TouchableOpacity
                                 onPress={sendMessage}
-                                className="w-12 h-12 bg-[#25D366] rounded-full justify-center items-center ml-1"
+                                className="w-12 h-12 bg-[#25D366] rounded-full justify-center items-center ml-1 shadow-md"
                             >
                                 <Ionicons name="send" size={20} color="white" />
                             </TouchableOpacity>
                         ) : (
-                            <TouchableOpacity className="w-12 h-12 bg-[#25D366] rounded-full justify-center items-center ml-1">
-                                <Ionicons name="mic" size={20} color="white" />
+                            <TouchableOpacity className="w-12 h-12 bg-[#25D366] rounded-full justify-center items-center ml-1 shadow-md">
+                                <Ionicons name="mic" size={22} color="white" />
                             </TouchableOpacity>
                         )}
                     </View>
                 </View>
-            </SafeAreaView>
-        </KeyboardDismissWrapper>
+            </KeyboardAvoidingView>
+        </View>
     );
 }

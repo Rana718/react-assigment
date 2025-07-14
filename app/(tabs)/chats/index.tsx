@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import {
-    View,
-    Text,
-    FlatList,
-    TouchableOpacity,
-    TextInput,
-    StatusBar,
-    SafeAreaView,
-    RefreshControl,
-} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { chats, Chat } from '../../../constants/tempData';
+import React, { useState } from 'react';
+import {
+    FlatList,
+    RefreshControl,
+    StatusBar,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ChatListItem from '../../../components/ChatListItem';
+import { Chat, chats } from '../../../constants/tempData';
 
 export default function ChatsIndex() {
     const [searchQuery, setSearchQuery] = useState('');
     const [chatList, setChatList] = useState(chats);
     const [refreshing, setRefreshing] = useState(false);
     const [isSearchFocused, setIsSearchFocused] = useState(false);
+    const insets = useSafeAreaInsets();
 
     const filteredChats = chatList.filter(chat =>
         chat.user.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -53,10 +54,10 @@ export default function ChatsIndex() {
     );
 
     return (
-        <SafeAreaView className="flex-1 bg-white">
+        <View className="flex-1 bg-white" style={{ paddingTop: insets.top }}>
             <StatusBar barStyle="dark-content" backgroundColor="white" />
 
-            <View className="bg-white px-4 pb-5 pt-12 border-b border-gray-200">
+            <View className="bg-white px-4 pb-5 pt-3 border-b border-gray-200">
                 <View className="flex-row justify-between items-center mb-3">
                     <View className="flex-row items-center">
                         <Text className="text-2xl font-bold text-gray-900">Chats</Text>
@@ -125,6 +126,6 @@ export default function ChatsIndex() {
             >
                 <Ionicons name="chatbubble" size={24} color="white" />
             </TouchableOpacity>
-        </SafeAreaView>
+        </View>
     );
 }

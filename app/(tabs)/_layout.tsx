@@ -1,6 +1,7 @@
 import { Link, Tabs, usePathname } from 'expo-router';
 import { Pressable, Text, View } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const footerTabs = [
   { label: "Oka(you)", route: "/(tabs)/" },
@@ -11,9 +12,12 @@ const footerTabs = [
 
 export default function TabLayout() {
   const pathname = usePathname();
+  const insets = useSafeAreaInsets();
 
-  const hideFooterRoutes = ['/camera', '/chats/[chatid]', '/chats/call/[callid]'];
-  const shouldHideFooter = hideFooterRoutes.includes(pathname);
+  const shouldHideFooter =
+    pathname.includes('/camera') ||
+    (pathname.includes('/chats/') && !pathname.endsWith('/chats')) ||
+    pathname.includes('/call/');
 
   return (
     <View className="flex-1">
@@ -31,7 +35,8 @@ export default function TabLayout() {
       {!shouldHideFooter && (
         <Animated.View
           entering={FadeInUp}
-          className="bg-[#3DC4AB] px-4 py-3 pb-12 border-t border-gray-200"
+          className="bg-[#3DC4AB] px-4 py-3 border-t border-gray-200"
+          style={{ paddingBottom: Math.max(insets.bottom, 12) }}
         >
           <View className="flex-row justify-around">
             {footerTabs.map(({ label, route }) => {
