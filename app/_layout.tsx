@@ -1,4 +1,3 @@
-import KeyboardDismissWrapper from '@/components/KeyboardDismissWrapper';
 import SplashScreen from '@/components/SplashScreen';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
@@ -27,16 +26,14 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
-      <KeyboardDismissWrapper>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-        <Toast />
-      </KeyboardDismissWrapper>
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      <StatusBar style="auto" />
+      <Toast />
     </SafeAreaProvider>
   );
 }

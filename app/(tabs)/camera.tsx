@@ -1,23 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
-import {
-  CameraType,
-  CameraView,
-  useCameraPermissions,
-  useMicrophonePermissions,
-} from 'expo-camera';
+import { CameraType, CameraView, useCameraPermissions, useMicrophonePermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
 import { router } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  Alert,
-  Image,
-  Modal,
-  Pressable,
-  Share,
-  Text,
-  View,
-} from 'react-native';
+import { Alert, Image, Modal, Pressable, Share, StatusBar, Text, View } from 'react-native';
 
 export default function CameraScreen() {
   const [selectedMode, setSelectedMode] = useState<'image' | 'video' | 'text'>('image');
@@ -165,6 +152,7 @@ export default function CameraScreen() {
 
   return (
     <View className="flex-1 bg-black">
+      <StatusBar hidden={true} />
       <View className="absolute top-12 left-4 z-10 bg-white/60 rounded-full p-2">
         <Pressable onPress={() => router.back()} className="p-1">
           <Ionicons name="arrow-back" size={28} color="black" />

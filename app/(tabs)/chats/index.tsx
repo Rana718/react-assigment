@@ -1,17 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import {
-    FlatList,
-    RefreshControl,
-    StatusBar,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+import { FlatList, RefreshControl, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import ChatListItem from '../../../components/ChatListItem';
-import { Chat, chats } from '../../../constants/tempData';
+import ChatListItem from '@/components/ChatListItem';
+import { chats } from '@/constants/tempData';
+import { Chat } from '@/types';
 
 export default function ChatsIndex() {
     const [searchQuery, setSearchQuery] = useState('');

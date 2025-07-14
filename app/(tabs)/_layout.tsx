@@ -4,10 +4,10 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const footerTabs = [
-  { label: "Oka(you)", route: "/(tabs)/" },
-  { label: "Bond", route: "/(tabs)/bond" },
-  { label: "Oka's", route: "/(tabs)/okas" },
-  { label: "Chats", route: "/(tabs)/chats" }
+  { label: "Oka(you)", route: "/" },
+  { label: "Bond", route: "/bond" },
+  { label: "Oka's", route: "/okas" },
+  { label: "Chats", route: "/chats" }
 ];
 
 export default function TabLayout() {
@@ -35,8 +35,8 @@ export default function TabLayout() {
       {!shouldHideFooter && (
         <Animated.View
           entering={FadeInUp}
-          className="bg-[#3DC4AB] px-4 py-3 border-t border-gray-200"
-          style={{ paddingBottom: Math.max(insets.bottom, 12) }}
+          className="bg-[#3DC4AB] px-4 pt-3 border-t border-gray-200"
+          style={{ paddingBottom: insets.bottom+15 }}
         >
           <View className="flex-row justify-around">
             {footerTabs.map(({ label, route }) => {
@@ -49,7 +49,7 @@ export default function TabLayout() {
                   asChild
                 >
                   <Pressable className="items-center">
-                    <Text className={`text-black font-semibold ${isActive ? 'opacity-100 underline' : 'opacity-60'}`}>
+                    <Text className={`text-black font-semibold ${isActive ? 'text-white font-bold' : 'opacity-60'}`}>
                       {label}
                     </Text>
                   </Pressable>

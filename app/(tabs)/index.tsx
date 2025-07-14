@@ -7,7 +7,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, Image, Modal, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
@@ -61,8 +61,8 @@ export default function HomeScreen() {
   };
 
   return (
-    <View className="flex-1 bg-white">
-      <View className="bg-[#3DC4AB] px-4 pt-3 pb-4">
+    <View className="flex-1">
+      <View className="bg-[#3DC4AB] px-4 pb-4" style={{ paddingTop: insets.top }}>
         <View className="flex-row items-center justify-between">
           <View className="flex-row items-center">
             <View className="w-12 h-12 rounded-full bg-white items-center justify-center mr-3">
@@ -70,78 +70,97 @@ export default function HomeScreen() {
             </View>
             <Text className="text-black text-xl font-bold">OkaBoka</Text>
           </View>
-          <View className="flex-row items-center">
+          <View className="flex-row items-center relative">
             <Ionicons name="notifications-outline" size={24} color="black" className="mr-3" />
-            <Pressable onPress={() => setShowProfileDropdown(true)}>
-              <Image source={UserImg} className="w-8 h-8 rounded-full" />
+            <Pressable onPress={() => setShowProfileDropdown(!showProfileDropdown)}>
+              <Image source={UserImg} className="w-12 h-12 rounded-full" />
             </Pressable>
+
+            {showProfileDropdown && (
+              <View className="absolute bg-white rounded-lg shadow-lg min-w-[150px] z-50"
+                style={{ top: 50, right: 0 }}>
+                <Pressable
+                  className="flex-row items-center px-4 py-3"
+                  onPress={handleSignOut}
+                >
+                  <Ionicons name="log-out-outline" size={20} color="#ef4444" />
+                  <Text className="ml-3 text-red-500 font-medium">Sign Out</Text>
+                </Pressable>
+              </View>
+            )}
           </View>
         </View>
       </View>
 
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
+      <Pressable
         className="flex-1"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        onPress={() => showProfileDropdown && setShowProfileDropdown(false)}
       >
-        <View className="px-4 py-5 mt-[1px] bg-[#3DC4AB]">
-          <Text className="text-center text-lg font-semibold mb-4">How I'm Feeling Right Now</Text>
-          <View className="flex-row items-center justify-center">
-            <Ionicons name="chevron-back" size={20} color="#666" />
-            <View className="mx-4 flex-row items-end" style={{ height: 70 }}>
-              {moods.map((mood, index) => (
-                <TouchableOpacity
-                  key={mood.id}
-                  style={{
-                    marginHorizontal: 12,
-                    alignItems: 'center',
-                    transform: selectedMood === index ? [{ translateY: -10 }] : [{ translateY: 0 }]
-                  }}
-                  onPress={() => setSelectedMood(index)}
-                >
-                  <Text style={{ fontSize: selectedMood === index ? 48 : 36, marginBottom: 2 }}>
-                    {mood.emoji}
-                  </Text>
-                  {selectedMood === index && (
-                    <View className="flex-row items-center justify-center">
-                      <AntDesign name="user" size={14} color="black" />
-                      <Text className='text-[11px] text-[#666] ml-0.5'>{mood.users}</Text>
-                    </View>
-                  )}
-                </TouchableOpacity>
-              ))}
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          className="flex-1"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 100 }}
+          onScrollBeginDrag={() => setShowProfileDropdown(false)}
+        >
+          <View className="px-4 py-5 mt-[1px] bg-[#3DC4AB]">
+            <Text className="text-center text-lg font-semibold mb-4">How I'm Feeling Right Now</Text>
+            <View className="flex-row items-center justify-center">
+              <Ionicons name="chevron-back" size={20} color="#666" />
+              <View className="mx-4 flex-row items-end" style={{ height: 70 }}>
+                {moods.map((mood, index) => (
+                  <TouchableOpacity
+                    key={mood.id}
+                    style={{
+                      marginHorizontal: 12,
+                      alignItems: 'center',
+                      transform: selectedMood === index ? [{ translateY: -10 }] : [{ translateY: 0 }]
+                    }}
+                    onPress={() => setSelectedMood(index)}
+                  >
+                    <Text style={{ fontSize: selectedMood === index ? 48 : 36, marginBottom: 2 }}>
+                      {mood.emoji}
+                    </Text>
+                    {selectedMood === index && (
+                      <View className="flex-row items-center justify-center">
+                        <AntDesign name="user" size={14} color="black" />
+                        <Text className='text-[11px] text-[#666] ml-0.5'>{mood.users}</Text>
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                ))}
+              </View>
+              <Ionicons name="chevron-forward" size={20} color="#666" />
             </View>
-            <Ionicons name="chevron-forward" size={20} color="#666" />
           </View>
-        </View>
 
-        <View className="px-4 pt-3">
-          {posts.map((post) => (
-            <View key={post.id} className="bg-white rounded-lg shadow-sm border border-gray-100 mb-4 p-4">
-              <View className="flex-row items-center justify-between mb-2">
-                <View className="flex-row items-center">
-                  <Text className="text-gray-600 text-sm mr-2">{post.date}</Text>
-                  <Text className="text-lg">{post.mood}</Text>
+          <View className="px-4 pt-3">
+            {posts.map((post) => (
+              <View key={post.id} className="bg-white rounded-lg shadow-sm border border-gray-100 mb-4 p-4">
+                <View className="flex-row items-center justify-between mb-2">
+                  <View className="flex-row items-center">
+                    <Text className="text-gray-600 text-sm mr-2">{post.date}</Text>
+                    <Text className="text-lg">{post.mood}</Text>
+                  </View>
+                  <Ionicons name="ellipsis-horizontal" size={20} color="#666" />
                 </View>
-                <Ionicons name="ellipsis-horizontal" size={20} color="#666" />
+                <Text className="text-xs text-gray-400 mb-3">Feeling of the Day</Text>
+
+                <View className="flex-row items-center mb-3">
+                  <Ionicons name="location-outline" size={16} color="#666" className="mr-2" />
+                  <Text className="text-gray-600 text-sm">{post.location}</Text>
+                </View>
+
+                <View className="h-px bg-gray-200 mb-3" />
+
+                <Text className="text-gray-700 text-sm mb-3">{post.description}</Text>
+
+                {RenderImages(post.images, post.id)}
               </View>
-              <Text className="text-xs text-gray-400 mb-3">Feeling of the Day</Text>
-
-              <View className="flex-row items-center mb-3">
-                <Ionicons name="location-outline" size={16} color="#666" className="mr-2" />
-                <Text className="text-gray-600 text-sm">{post.location}</Text>
-              </View>
-
-              <View className="h-px bg-gray-200 mb-3" />
-
-              <Text className="text-gray-700 text-sm mb-3">{post.description}</Text>
-
-              {RenderImages(post.images, post.id)}
-            </View>
-          ))}
-        </View>
-      </ScrollView>
+            ))}
+          </View>
+        </ScrollView>
+      </Pressable>
 
       <Pressable
         className="absolute bottom-8 right-6 w-14 h-14 bg-[#3DC4AB] rounded-full items-center justify-center shadow-lg"
@@ -149,29 +168,6 @@ export default function HomeScreen() {
       >
         <Ionicons name="add" size={24} color="white" />
       </Pressable>
-
-      <Modal
-        visible={showProfileDropdown}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={() => setShowProfileDropdown(false)}
-      >
-        <Pressable
-          className="flex-1 bg-black/50"
-          onPress={() => setShowProfileDropdown(false)}
-        >
-          <View className="absolute bg-white rounded-lg shadow-lg min-w-[150px]" style={{ top: insets.top + 64, right: 16 }}>
-            <Pressable
-              className="flex-row items-center px-4 py-3"
-              onPress={handleSignOut}
-            >
-              <Ionicons name="log-out-outline" size={20} color="#ef4444" />
-              <Text className="ml-3 text-red-500 font-medium">Sign Out</Text>
-            </Pressable>
-          </View>
-        </Pressable>
-      </Modal>
-
     </View>
   );
 }

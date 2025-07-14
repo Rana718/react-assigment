@@ -1,21 +1,11 @@
+import MessageBubble from '@/components/MessageBubble';
+import { chats, currentUser } from '@/constants/tempData';
+import { Message } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
-import {
-    FlatList,
-    Image,
-    Keyboard,
-    KeyboardAvoidingView,
-    Platform,
-    StatusBar,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
-} from 'react-native';
+import { FlatList, Image, Keyboard, KeyboardAvoidingView, Platform, StatusBar, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import MessageBubble from '../../../components/MessageBubble';
-import { chats, currentUser, Message } from '../../../constants/tempData';
 
 export default function ChatConversation() {
     const { chatid } = useLocalSearchParams();
@@ -75,7 +65,9 @@ export default function ChatConversation() {
 
         setMessages(prev => [...prev, newMessage]);
         setMessageText('');
-
+        requestAnimationFrame(() => {
+            flatListRef.current?.scrollToEnd({ animated: true });
+        });
         setIsTyping(true);
         setTimeout(() => {
             setIsTyping(false);
@@ -98,11 +90,10 @@ export default function ChatConversation() {
             };
 
             setMessages(prev => [...prev, autoReply]);
+            requestAnimationFrame(() => {
+                flatListRef.current?.scrollToEnd({ animated: true });
+            });
         }, 2000);
-
-        setTimeout(() => {
-            flatListRef.current?.scrollToEnd({ animated: true });
-        }, 100);
     };
 
     const handleDeleteMessage = (messageId: string, deleteType: 'me' | 'everyone') => {
@@ -164,10 +155,12 @@ export default function ChatConversation() {
     }
 
     return (
-        <View className="flex-1 bg-white" style={{ paddingTop: insets.top }}>
-            <StatusBar barStyle="light-content" backgroundColor="#3DC4AB" />
+        <View
+            className="flex-1 bg-white"
+        >
+            <StatusBar barStyle="light-content" />
 
-            <View className="bg-[#3DC4AB] px-4 py-3 flex-row items-center">
+            <View className="bg-[#3DC4AB] px-4 py-3 flex-row items-center" style={{ paddingTop: insets.top }}>
                 <TouchableOpacity onPress={() => router.back()} className="mr-3">
                     <Ionicons name="arrow-back" size={24} color="white" />
                 </TouchableOpacity>
@@ -205,34 +198,54 @@ export default function ChatConversation() {
                 </View>
             </View>
 
-            <KeyboardAvoidingView 
-                className="flex-1"
+            <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                keyboardVerticalOffset={0}
+                className="flex-1"
+                style={{ paddingBottom: keyboardHeight }}
             >
                 <View className="flex-1 bg-[#E5DDD5]">
-                    <FlatList
-                        ref={flatListRef}
-                        data={messages}
-                        renderItem={renderMessage}
-                        keyExtractor={(item) => item.id}
-                        className="flex-1 px-4"
-                        showsVerticalScrollIndicator={false}
-                        onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: false })}
-                        ListFooterComponent={renderTypingIndicator}
-                        contentContainerStyle={{ 
-                            paddingTop: 10,
-                            paddingBottom: 10,
-                            flexGrow: 1
-                        }}
-                        keyboardShouldPersistTaps="handled"
-                    />
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                        <View className="flex-1">
+                            <FlatList
+                                ref={flatListRef}
+                                data={messages}
+                                renderItem={renderMessage}
+                                keyExtractor={(item) => item.id}
+                                className="flex-1 px-4"
+                                showsVerticalScrollIndicator={false}
+                                onLayout={() => {
+                                    if (messages.length > 0) {
+                                        setTimeout(() => {
+                                            flatListRef.current?.scrollToEnd({ animated: false });
+                                        }, 100);
+                                    }
+                                }}
+                                ListFooterComponent={renderTypingIndicator}
+                                contentContainerStyle={{
+                                    paddingTop: 10,
+                                    paddingBottom: 10,
+                                    flexGrow: 1
+                                }}
+                                keyboardShouldPersistTaps="handled"
+                                removeClippedSubviews={false}
+                                maintainVisibleContentPosition={{
+                                    minIndexForVisible: 0,
+                                    autoscrollToTopThreshold: 10,
+                                }}
+                                windowSize={10}
+                                maxToRenderPerBatch={10}
+                                updateCellsBatchingPeriod={50}
+                                initialNumToRender={20}
+                                getItemLayout={undefined} 
+                            />
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
 
                 <View
                     className="bg-white border-t border-gray-200"
                     style={{
-                        paddingBottom: Math.max(insets.bottom, 8)
+                        paddingBottom: insets.bottom + 10
                     }}
                 >
                     <View className="flex-row items-end px-2 py-2">
@@ -249,11 +262,17 @@ export default function ChatConversation() {
                                 multiline
                                 placeholderTextColor="#8E8E93"
                                 onSubmitEditing={sendMessage}
-                                style={{ 
+                                onFocus={() => {
+                                    setTimeout(() => {
+                                        flatListRef.current?.scrollToEnd({ animated: true });
+                                    }, 300);
+                                }}
+                                style={{
                                     minHeight: 40,
                                     lineHeight: 20,
                                     textAlignVertical: 'top'
                                 }}
+                                returnKeyType="send"
                             />
 
                             <TouchableOpacity className="p-2">

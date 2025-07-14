@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import { Message } from '../constants/tempData';
+import { Message } from '@/types';
 
 interface MessageBubbleProps {
     message: Message;
@@ -87,8 +87,9 @@ export default function MessageBubble({ message, isCurrentUser, showTime, onDele
                             {isCurrentUser && (
                                 <Ionicons
                                     name={message.isRead ? "checkmark-done" : "checkmark"}
-                                    size={14}
-                                    color={message.isRead ? "#4FC3F7" : "#9E9E9E"}
+                                    size={16}
+                                    className='ml-0.5 font-bold'
+                                    color={message.isRead ? "#1E3A5F" : "#ffffff"}
                                 />
                             )}
                         </View>

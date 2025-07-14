@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { Chat, formatTime } from '../constants/tempData';
+import { formatTime } from '@/constants/tempData';
+import { Chat } from '@/types';
 
 interface ChatListItemProps {
     chat: Chat;

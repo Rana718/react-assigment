@@ -2,16 +2,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { Camera, CameraView } from 'expo-camera';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
-import {
-    Animated,
-    Image,
-    StatusBar,
-    Text,
-    TouchableOpacity,
-    View
-} from 'react-native';
+import { Animated, Image, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { users } from '../../../../constants/tempData';
+import { users } from '@/constants/tempData';
 
 
 export default function CallScreen() {
@@ -374,7 +367,7 @@ export default function CallScreen() {
                             disabled={!isVideoCall && !isCallConnected}
                         >
                             <View className={`w-15 h-15 rounded-full justify-center items-center ${!isVideoCall ? 'bg-gray-700' :
-                                    (isVideoCall && !isCameraOn) ? 'bg-red-600' : 'bg-white/20'
+                                (isVideoCall && !isCameraOn) ? 'bg-red-600' : 'bg-white/20'
                                 }`}>
                                 <Ionicons
                                     name={isVideoCall ? (isCameraOn ? "videocam" : "videocam-off") : "videocam"}
